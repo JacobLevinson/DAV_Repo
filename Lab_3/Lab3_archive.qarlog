@@ -1,0 +1,17 @@
+Quartus Prime Archive log --	C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/Lab3_archive.qarlog
+
+Archive:	C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/Lab3_archive.qar
+Date:		Sat Dec 10 21:31:05 2022
+Quartus Prime		21.1.0 Build 842 10/21/2021 SJ Lite Edition
+
+	=========== Files Selected: ===========
+C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/Lab3.qpf
+C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/Lab3.qsf
+C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/Lab3.sv
+C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/clockDivider.sv
+C:/Users/jacob/OneDrive/2022-2023/DAV/Lab 3/tb_Lab3.sv
+c:/intelfpga_lite/21.1/quartus/bin64/assignment_defaults.qdf
+	======= Total: 6 files to archive =======
+
+	================ Status: ===============
+All files archived successfully.

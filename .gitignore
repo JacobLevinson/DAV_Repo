@@ -1,0 +1,8 @@
+*.bak
+*.qar
+simulation
+output_files
+db
+*.tdf
+Lab3_partition_pins.json
+incremental_db
