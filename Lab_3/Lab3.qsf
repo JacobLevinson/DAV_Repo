@@ -207,4 +207,7 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to switches[3]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to switches[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to switches[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to switches[0]
+set_location_assignment PIN_AB5 -to buzzer
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to buzzer
+set_global_assignment -name SYSTEMVERILOG_FILE my_timer.sv
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
