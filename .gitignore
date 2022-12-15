@@ -7,3 +7,5 @@ db
 Lab3_partition_pins.json
 incremental_db
 *.qws
+*.rpt
+*.qarlog
