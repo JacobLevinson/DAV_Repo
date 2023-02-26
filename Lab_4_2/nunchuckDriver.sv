@@ -17,8 +17,8 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 
 	localparam MAX_BYTES = 6; //Parameter for I2C low-level (LL) driver, max # of bytes to read/write at once, determines dataIn / Out width.
 	
-	localparam I2C_CLOCK_SPEED = //TODO; 	 //400kHz
-	localparam MESSAGE_RATE = //TODO; 		 //100Hz is the rate at which we send/read messages
+	localparam I2C_CLOCK_SPEED = 400000; 	 //400kHz
+	localparam MESSAGE_RATE = 100;		 //100Hz is the rate at which we send/read messages
 	
 	
 	
@@ -69,8 +69,8 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 			As per the spec, one of these clock dividers should be replaced with a PLL IP by the end of the lab
 			This requirement will make more sense after Lecture 5
 	*/
-	
-	clockDivider #(I2C_CLOCK_SPEED) i2c_clock_uut(clock, i2c_clock, rst); 		//this clock corresponds to each I2C instruction 
+	reg i2c_clock_pll_rst = 1'b0;
+	i2c_clock_pll i2c_clock_generator(i2c_clock_pll_rst, clock, i2c_clock);		//this clock corresponds to each I2C instruction 
 	clockDivider #(MESSAGE_RATE) polling_clock_uut(clock, polling_clock, rst); //clock is for spacing out messages to send
 	
 	
