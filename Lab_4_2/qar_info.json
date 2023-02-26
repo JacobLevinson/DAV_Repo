@@ -1,0 +1,7 @@
+{
+	"common_dir" : "D:/QuartusProjects/I2C Skeleton/",
+	"acds_version" : "Version 21.1.0",
+	"platform" : "windows",
+	"os" : "Windows 10",
+	"qpf" : "I2CLab.qpf"
+}

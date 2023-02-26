@@ -1,0 +1,202 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2021  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details, at
+# https://fpgasoftware.intel.com/eula.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+# Date created = 14:54:03  January 10, 2023
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		nunchuckDriver_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Intel recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M50DAF484C7G
+set_global_assignment -name TOP_LEVEL_ENTITY nunchuck_led_test
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 21.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:54:03  JANUARY 10, 2023"
+set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name EDA_SIMULATION_TOOL "Questa Intel FPGA (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH nunchuckDriver_tb -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME nunchuckDriver_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id nunchuckDriver_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "2 s" -section_id nunchuckDriver_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME nunchuckDriver_tb -section_id nunchuckDriver_tb
+set_location_assignment PIN_P11 -to clk
+set_location_assignment PIN_B8 -to rst
+set_location_assignment PIN_B11 -to leds[9]
+set_location_assignment PIN_A11 -to leds[8]
+set_location_assignment PIN_D14 -to leds[7]
+set_location_assignment PIN_E14 -to leds[6]
+set_location_assignment PIN_C13 -to leds[5]
+set_location_assignment PIN_D13 -to leds[4]
+set_location_assignment PIN_B10 -to leds[3]
+set_location_assignment PIN_A10 -to leds[2]
+set_location_assignment PIN_A9 -to leds[1]
+set_location_assignment PIN_A8 -to leds[0]
+set_location_assignment PIN_AB5 -to scl
+set_location_assignment PIN_AB6 -to sda
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[9]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[8]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to leds[0]
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to rst
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to scl
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sda
+set_location_assignment PIN_V10 -to byte_cnt[2]
+set_location_assignment PIN_V9 -to byte_cnt[1]
+set_location_assignment PIN_V8 -to byte_cnt[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to byte_cnt[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to byte_cnt[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to byte_cnt[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sample
+set_location_assignment PIN_V7 -to sample
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_C14 -to dig0[0]
+set_location_assignment PIN_E15 -to dig0[1]
+set_location_assignment PIN_C15 -to dig0[2]
+set_location_assignment PIN_C16 -to dig0[3]
+set_location_assignment PIN_E16 -to dig0[4]
+set_location_assignment PIN_D17 -to dig0[5]
+set_location_assignment PIN_C17 -to dig0[6]
+set_location_assignment PIN_D15 -to dig0[7]
+set_location_assignment PIN_C18 -to dig1[0]
+set_location_assignment PIN_D18 -to dig1[1]
+set_location_assignment PIN_E18 -to dig1[2]
+set_location_assignment PIN_B16 -to dig1[3]
+set_location_assignment PIN_A17 -to dig1[4]
+set_location_assignment PIN_A18 -to dig1[5]
+set_location_assignment PIN_B17 -to dig1[6]
+set_location_assignment PIN_A16 -to dig1[7]
+set_location_assignment PIN_B20 -to dig2[0]
+set_location_assignment PIN_A20 -to dig2[1]
+set_location_assignment PIN_B19 -to dig2[2]
+set_location_assignment PIN_A21 -to dig2[3]
+set_location_assignment PIN_B21 -to dig2[4]
+set_location_assignment PIN_C22 -to dig2[5]
+set_location_assignment PIN_B22 -to dig2[6]
+set_location_assignment PIN_A19 -to dig2[7]
+set_location_assignment PIN_F21 -to dig3[0]
+set_location_assignment PIN_E22 -to dig3[1]
+set_location_assignment PIN_E21 -to dig3[2]
+set_location_assignment PIN_C19 -to dig3[3]
+set_location_assignment PIN_C20 -to dig3[4]
+set_location_assignment PIN_D19 -to dig3[5]
+set_location_assignment PIN_E17 -to dig3[6]
+set_location_assignment PIN_D22 -to dig3[7]
+set_location_assignment PIN_F18 -to dig4[0]
+set_location_assignment PIN_E20 -to dig4[1]
+set_location_assignment PIN_E19 -to dig4[2]
+set_location_assignment PIN_J18 -to dig4[3]
+set_location_assignment PIN_H19 -to dig4[4]
+set_location_assignment PIN_F19 -to dig4[5]
+set_location_assignment PIN_F20 -to dig4[6]
+set_location_assignment PIN_F17 -to dig4[7]
+set_location_assignment PIN_J20 -to dig5[0]
+set_location_assignment PIN_K20 -to dig5[1]
+set_location_assignment PIN_L18 -to dig5[2]
+set_location_assignment PIN_N18 -to dig5[3]
+set_location_assignment PIN_M20 -to dig5[4]
+set_location_assignment PIN_N19 -to dig5[5]
+set_location_assignment PIN_N20 -to dig5[6]
+set_location_assignment PIN_L19 -to dig5[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig0[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig1[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig2[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig3[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig4[7]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[4]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[5]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to dig5[7]
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_FILE nunchuckDriver_tb.sv -section_id nunchuckDriver_tb
+set_global_assignment -name SYSTEMVERILOG_FILE nunchuckDriver.sv
+set_global_assignment -name SYSTEMVERILOG_FILE I2C.sv
+set_global_assignment -name SYSTEMVERILOG_FILE IOBuffer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE nunchuck_translator.sv
+set_global_assignment -name SYSTEMVERILOG_FILE nunchuck_test.sv
