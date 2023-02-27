@@ -1,4 +1,4 @@
-module IOBuffer(in, out, enable, port);
+module IOBuffer(input in, input we, output out, inout SDA);
 	
 	
 	always_comb begin

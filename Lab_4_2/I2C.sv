@@ -14,7 +14,7 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 	localparam IDLE = 6;
 	
 	// input / output ports
-	input clk; 								//note: clk is 3x the actual speed of i2c communication
+	input clk; 								//note: clk is 4x the actual speed of i2c communication
 	input rst;
 	input write_d;							//write = write enable
 	input start; 				 			//start = triggers FSM to start when start == 1
@@ -72,7 +72,7 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 		if(rst || driverDisable) begin
 			state <= IDLE;
 			write <= 0;
-			deviceAddr = 0;
+			deviceAddr <= 0;
 			numBytes <= 0;
 			dataIn <= '{default: '0};
 			regAddr <= 0;
@@ -88,9 +88,14 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 				However, in this implementation, numBytes includes the byte containing the dev_addr + r/w and the byte for the register address (for writes)
 				The reason for this is so we can reuse the code for sending/recieving bytes of data!
 				
-				But, you should adjust numBytes to accomodate. If we are reading, we only send one byte before sending the data. If writing, we also send reg address!
-				
+				But, you should adjust numBytes to accomodate. If we are reading, we only send one byte before sending the data. If writing, we also send reg address!			
 			*/
+			state <= next_state;
+			write <= write_d;
+			deviceAddr <= deviceAddr_d;
+			numBytes <= numBytes_d;
+			dataIn <= dataIn_d;
+			regAddr <= regAddr_d;
 		end
 	end
 	
@@ -121,8 +126,9 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 			end
 			
 			// increase delayCounter while idle
-			if(/*TODO*/ 0) begin
+			if(state == IDLE) begin
 				//TODO
+				delayCounter <= delayCounter + 1;
 			end else begin
 				delayCounter <= 0;
 			end
@@ -133,15 +139,22 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 				case (subbit_cnt)
 					0: begin
 						//TODO
+						scl <= 0;
+						in <= (state == START)? 1:0;
+						we <= 1;
 					end
 					1: begin
 						//TODO
+						scl <= 1;
 					end
 					2: begin
 						//TODO
+						in <= !in;
 					end
 					3: begin
 						//TODO
+						scl <= 0;
+						we <= 0;
 						done_sending <= 1;
 					end
 				endcase
@@ -155,25 +168,62 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 							scl <= 0;
 							if(sending_byte) begin
 								//TODO
+								we <= 1;
+								in <= data2send[7 - bit_cnt];
+
 							end else begin
 								//TODO
+								we <= 0;
+
 							end
 						end
 						1: begin
 							//TODO
+							scl <= 1;
 						end
 						2: begin
+							if(!sending_byte) begin
+								dataOut[7 - bit_cnt] <= out;
+							end
 							//TODO
 						end
 						3: begin
-							//TODO
+							scl <= 0;
+							we <= 0;
+							//TODO DONE
 						end
 					endcase
 					
 				//check or send ACK
 				end else begin
-					case (subbit_cnt)
-						//TODO
+					case (subbit_cnt) 
+					0: begin
+						scl <= 0;
+						if(sending_byte) begin
+							//TODO
+							we <= 1;
+							in <= (numBytes == byte_cnt + 1)? 1:0;
+
+						end else begin
+							//TODO
+							we <= 0;
+
+						end
+					end
+					1: begin
+						scl <= 1;
+					end
+					2: begin
+						if(!sending_byte) begin
+							notAcked <= out;
+						end
+					end
+					3: begin
+						scl <= 0;
+						we <= 0;
+						byte_cnt <= byte_cnt + 1;
+						done_sending <= 1;
+					end
 					endcase
 				end
 				
@@ -203,84 +253,97 @@ module I2C #(parameter MAX_BYTES = 6) (clk, rst, driverDisable, deviceAddr_d, re
 			
 			// Send START signal
 			START: begin
-				//TODO
+				data_start = 0;
+				sending_byte = 1;
+				data2send = '{default: '0};
 				if(done_sending) begin
-					//next_state = //TODO
+					next_state = DEV_ADDR;
 				end else begin
-					//next_state = //TODO
+					next_state = START;
 				end
 			end
 			
 			// Send device address
 			DEV_ADDR: begin
 				//send 7 bits for address
-				//data2send = //TODO
+				data_start = 1;
+				sending_byte = 1;
+				data2send = deviceAddr;
 				if(done_sending) begin
 					if(notAcked) begin
-						//TODO
+						next_state = RESET;
 					end else begin
+						next_state = write ? REG_ADDR : DATA;
 						//next_state = write ? /*TODO*/ : /*TODO*/; //write signal determines whether we need to send a reg address or can go to read
 						/////////feel free to replace the above line with an if/else syntax if you prefer
 					end
 				end
 				else begin
-					//next_state = //TODO;
+					next_state = DEV_ADDR;
 				end
 				
 			end
 			
 			// Send register address
 			REG_ADDR: begin
-				//TODO
+				data_start = 1;
+				sending_byte = 1;
+				data2send = regAddr;
 				if(done_sending && (subbit_cnt == 3 || subbit_cnt == 0)) begin
 					if(notAcked) begin
-						//next_state = TODO;
+						next_state = RESET;
 					end else begin
-						//next_state = (numBytes == byte_cnt) ? TODO : TODO; 
+						next_state = (numBytes == byte_cnt) ? STOP : DATA; 
 						/////////feel free to replace the above line with an if/else syntax if you prefer
 					end
 				end
 				else begin
-					//next_state = TODO;
+					next_state = REG_ADDR;
 				end
 			end
 			
 			// read / write bulk DATA
 			DATA: begin
-
-				//TODO
+				data_start = 1;
+				data2send = dataIn[byte_cnt-2];
+				sending_byte = write;
 
 				if(done_sending && (subbit_cnt == 3 || subbit_cnt == 0)) begin
 					if(notAcked) begin
-						//TODO
+						next_state = RESET;
 					end else begin
 						if (numBytes == byte_cnt) begin
-							//TODO
+							next_state = STOP;
 						end
 						else begin
-							//TODO
+							next_state = DATA;
 						end
 					end
 				end
 				else begin
-					//TODO
+					next_state = DATA;
 				end
 			end
 			
 			
 			// Send STOP signal
 			STOP: begin
-				//TODO
+				data_start = 0;
+				data2send = dataIn[0];
+				sending_byte = write;
+				next_state = IDLE;
 			end
 
 			// Adds delay to space out individual commands
 			IDLE: begin
 				//TODO
-				
-				if(delayCounter > /*TODO*/) begin
-					//TODO
+				data_start = 0;
+				data2send = dataIn[0];
+				sending_byte = write;
+				if(delayCounter > 250) begin
+					next_state = START;
 				end else begin
-					//TODO
+					next_state = IDLE;
 				end
 			end
 			
