@@ -37,7 +37,7 @@ module nunchuck_test(clk, rst, sda, scl, dig0, dig1, dig2, dig3, dig4, dig5,leds
 	assign leds[7] = accel_X[7];
 	assign leds[8] = accel_X[8];
 	assign leds[9] = accel_X[9];
-
+	// add dots for z and c buttons
 	assign dig5 = {z,dig5_int[6:0]};
 	assign dig0 = {c,dig0_int[6:0]};
 	
