@@ -1,10 +1,11 @@
 module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y, accel_z, z, c, rst);
-	input clock, rst;
+	input clock;
 	inout SDApin;
 	output SCLpin;
 	output [7:0] stick_x, stick_y;
 	output [9:0] accel_x, accel_y, accel_z;
 	output z, c;
+	input rst;
 	
 	
 	// State name parameters:
@@ -45,7 +46,7 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 	/////////////////////////
 	
 	reg communicate = 1'b0; 						//Flag that determines whether its time for us to send a new message. Controlled by the polling rate
-	reg [6:0] regAddress; 							//memory address for the peripheral device
+								//memory address for the peripheral device
 	reg [6:0] deviceAddr;
 	reg [7:0] addr;
 	
@@ -63,7 +64,7 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 	// submodule declarations
 	//	TODO: declare I2C and nunchuckTranslator!
 	reg start = 0;
-	I2C  i2c_driver(i2c_clock, rst, driverDisable, deviceAddr, regAddress, numBytes, dataIn, dataOut, write, start, done, SCLpin, SDApin);
+	I2C  i2c_driver(i2c_clock, rst, driverDisable, deviceAddr, addr, numBytes, dataIn, dataOut_d, write, start, done, SCLpin, SDApin);
 	nunchuk_translator translator(dataOut[5:0], stick_x, stick_y, accel_x, accel_y, accel_z, z, c);
 
 	/*
@@ -73,7 +74,8 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 			This requirement will make more sense after Lecture 5
 	*/
 	reg i2c_clock_pll_rst = 1'b0;
-	i2c_clock_pll i2c_clock_generator(i2c_clock_pll_rst, clock, i2c_clock);		//this clock corresponds to each I2C instruction 
+	clockDivider #(I2C_CLOCK_SPEED) i2c_clock_generator(clock, i2c_clock);
+	//i2c_clock_pll i2c_clock_generator(i2c_clock_pll_rst, clock, i2c_clock);		//this clock corresponds to each I2C instruction 
 	clockDivider #(MESSAGE_RATE) polling_clock_uut(clock, polling_clock); //clock is for spacing out messages to send
 	
 	
@@ -88,7 +90,7 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 			//Two bit shift register:
 			if (done || communicate) begin
 				state <= next_state;
-				if(state == HANDSHAKE2) handshakeDone <= handshakeDone + 1;
+				if(state == HANDSHAKE2) handshakeDone <= handshakeDone + 1'b1;
 				if(next_state == READ2) dataOut <= dataOut_d;
 			end 
 			polling_clock_vals <= (polling_clock_vals << 1) + polling_clock;
@@ -176,7 +178,7 @@ module nunchuckDriver(clock, SDApin, SCLpin, stick_x, stick_y, accel_x, accel_y,
 					dataIn[0] = 8'h00;
 					numBytes = 6;
 					write = 0;
-					next_state = DONE;
+					next_state = HANDSHAKE1;
 				end
 			end
 		endcase

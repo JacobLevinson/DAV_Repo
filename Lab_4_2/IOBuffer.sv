@@ -1,14 +1,6 @@
-module IOBuffer(input in, input we, output out, inout SDA);
+module IOBuffer(input in, input we, output out, inout SDA_pin);
 	
-	
-	always_comb begin
-    if(we == 1'b1) begin
-        SDA <= in;
-        out <= 1'b0;
-    end else begin
-        SDA <=1'bz;
-        out <= SDA;
-    end
-	end
+	assign SDA_pin = (we) ? in : 1'bz;
+    assign out = (we) ? 1'b0 : SDA_pin;
 
 endmodule
