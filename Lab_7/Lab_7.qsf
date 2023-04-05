@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C7G
-set_global_assignment -name TOP_LEVEL_ENTITY tb_butterfly_unit
+set_global_assignment -name TOP_LEVEL_ENTITY fft_4point_tb
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 21.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:43:43  MARCH 30, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
