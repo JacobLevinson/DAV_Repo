@@ -70,10 +70,8 @@ module capstone(
 	wire [3:0] blue_wire_out;
 	wire hsync_wire;
 	wire vsync_wire;
-    wire rst_inv;
-	assign rst_inv = ~rst;
-    vga_pll vpll(rst_rst,clkin,vga_clk);
-    vga_display vga_maker(vga_clk, rst_inv, hsync_wire, vsync_wire, red_wire_out, green_wire_out, blue_wire_out);
+    vga_pll vpll(~rst,clkin,vga_clk);
+    vga_display vga_maker(vga_clk, ~rst, hsync_wire, vsync_wire, red_wire_out, green_wire_out, blue_wire_out);
     always_comb begin
 		red = red_wire_out;
 		blue = blue_wire_out;
