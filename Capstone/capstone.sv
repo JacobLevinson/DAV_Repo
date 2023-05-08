@@ -71,7 +71,19 @@ module capstone(
 	wire hsync_wire;
 	wire vsync_wire;
     vga_pll vpll(~rst,clkin,vga_clk);
-    vga_display vga_maker(vga_clk, ~rst, hsync_wire, vsync_wire, red_wire_out, green_wire_out, blue_wire_out);
+
+
+
+
+    reg [9:0] ball_x_pos = 10'd300;
+    reg [9:0] ball_y_pos = 10'd300;
+    reg [9:0] player1_x_pos = 10'd0;
+    reg [9:0] player1_y_pos = 10'd100;
+    reg [9:0] player2_x_pos = 10'd634;
+    reg [9:0] player2_y_pos = 10'd200;
+    vga_display vga_maker(vga_clk, ~rst, ball_x_pos, ball_y_pos, player1_x_pos, 
+    player1_y_pos, player2_x_pos, player2_y_pos, 
+    hsync_wire, vsync_wire, red_wire_out, green_wire_out, blue_wire_out);
     always_comb begin
 		red = red_wire_out;
 		blue = blue_wire_out;
