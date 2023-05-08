@@ -77,17 +77,17 @@ module capstone(
     reg [21:0] rst_delay_counter = 0;
 
     //delay game reset
-    always @(posedge clk) begin
-        if (rst) begin
-            rst_delay_counter <= 0;
+    always @(posedge clkin) begin
+        if (~rst) begin
+            rst_delay_counter <= 22'd0;
             game_rst <= 1;
         end else begin
             if (rst_delay_counter < 2500000) begin
                 rst_delay_counter <= rst_delay_counter + 1;
-                game_rst <= 1;
+                game_rst <= 22'd1;
             end else begin
                 rst_delay_counter <= rst_delay_counter;
-                game_rst <= 0;
+                game_rst <= 22'd0;
             end
         end
     end

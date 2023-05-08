@@ -61,8 +61,8 @@ module vga_display(
 		end
 	end
 
-	assign hsync = (hc < HBP && hc >= HPULSE) ? 0 : 1;
-	assign vsync = (vc < VBP && vc >= VPULSE) ? 0 : 1;
+	assign hsync = (hc < HBP && hc >= HPULSE) ? 1'd0 : 1'd1;
+	assign vsync = (vc < VBP && vc >= VPULSE) ? 1'd0 : 1'd1;
 	
 
     //RGB output block: set red, green, blue outputs here.

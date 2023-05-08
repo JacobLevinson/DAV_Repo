@@ -44,8 +44,8 @@ module game_state_updater(
 		player1_y_pos = 11'd100;
 		player2_x_pos = 11'd634;
 		player2_y_pos = 11'd200;
-		ball_x_vel = 11'd0;
-		ball_y_vel = 11'd0;
+		ball_x_vel = 10'd0;
+		ball_y_vel = 10'd0;
 		ball_x_direction = 0;
 		ball_y_direction = 0;
 	end
@@ -63,8 +63,8 @@ module game_state_updater(
 
 			ball_x_pos <= 11'd320;
 			ball_y_pos <= 11'd240;
-			ball_x_vel <= 11'd0;
-			ball_y_vel <= 11'd0;
+			ball_x_vel <= 10'd0;
+			ball_y_vel <= 10'd0;
 			ball_x_direction <= 0;
 			ball_y_direction <= 0;
 			player1_x_pos <= 11'd0; //constant 
@@ -75,8 +75,8 @@ module game_state_updater(
 			if(state == RESET) begin
 				ball_x_pos <= 11'd320;
 				ball_y_pos <= 11'd240;
-				ball_x_vel <= 11'd0;
-				ball_y_vel <= 11'd0;
+				ball_x_vel <= 10'd0;
+				ball_y_vel <= 10'd0;
 				ball_x_direction <= 0;
 				ball_y_direction <= 0;
 				player1_x_pos <= 11'd0; //constant 
@@ -95,8 +95,8 @@ module game_state_updater(
 				player2_x_pos <= 11'd634; //constant 
 				ball_x_pos = 11'd320;
 				ball_y_pos = 11'd240;
-				ball_x_vel = 11'd10;
-				ball_y_vel = 11'd0;
+				ball_x_vel = 10'd10;
+				ball_y_vel = 10'd0;
 				ball_x_direction = 0;
 				ball_y_direction = 0;
 				player1_y_pos = 11'd240;
@@ -107,8 +107,8 @@ module game_state_updater(
 				player2_x_pos <= 11'd634; //constant 
 				ball_x_pos <= 11'd320;
 				ball_y_pos <= 11'd240;
-				ball_x_vel <= 11'd10;
-				ball_y_vel <= 11'd0;
+				ball_x_vel <= 10'd10;
+				ball_y_vel <= 10'd0;
 				ball_x_direction <= 0;
 				ball_y_direction <= 0;
 				//move stuff
@@ -148,8 +148,8 @@ module game_state_updater(
 				next_state <= RESET;
 				ball_x_pos <= 11'd320;
 				ball_y_pos <= 11'd240;
-				ball_x_vel <= 11'd0;
-				ball_y_vel <= 11'd0;
+				ball_x_vel <= 10'd0;
+				ball_y_vel <= 10'd0;
 				ball_x_direction <= 0;
 				ball_y_direction <= 0;
 				player1_x_pos <= 11'd0; //constant 
