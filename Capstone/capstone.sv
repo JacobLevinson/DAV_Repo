@@ -83,18 +83,18 @@ module capstone(
             game_rst <= 1;
         end else begin
             if (rst_delay_counter < 2500000) begin
-                rst_delay_counter <= rst_delay_counter + 1;
-                game_rst <= 22'd1;
+                rst_delay_counter <= rst_delay_counter + 22'd1;
+                game_rst <= 1'd1;
             end else begin
                 rst_delay_counter <= rst_delay_counter;
-                game_rst <= 22'd0;
+                game_rst <= 1'd0;
             end
         end
     end
     wire start;
     assign start = z1;
     
-    game_state_updater game(~rst, start, vsync_wire, stick_X1, stick_Y1, accel_X1, accel_Y1, accel_Z1,
+    game_state_updater game(game_rst, start, vsync_wire, stick_X1, stick_Y1, accel_X1, accel_Y1, accel_Z1,
     z1, c1, stick_X2, stick_Y2, accel_X2, accel_Y2, accel_Z2, z2, c2, ball_x_pos, ball_y_pos, player1_x_pos, 
     player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score);
 
