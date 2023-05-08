@@ -1,6 +1,6 @@
 module capstone(
     input clkin,
-    input rst,
+    input rst, //INVERTED RESET
     inout sda1,
     inout sda2,
     output wire scl1,
@@ -48,15 +48,6 @@ module capstone(
 
 
 
-    //GAME STATE UPDATER
-
-
-
-
-
-
-
-    //GRAPHICS GENERATOR
 
 
 
@@ -70,17 +61,35 @@ module capstone(
 	wire [3:0] blue_wire_out;
 	wire hsync_wire;
 	wire vsync_wire;
+    wire vga_clk;
     vga_pll vpll(~rst,clkin,vga_clk);
+    wire [10:0] ball_x_pos;
+    wire [10:0] ball_y_pos;
+    wire [10:0] player1_x_pos;
+    wire [10:0] player1_y_pos;
+    wire [10:0] player2_x_pos; 
+    wire [10:0] player2_y_pos;
+    wire [7:0] player1_score;
+	wire [7:0] player2_score;
+    
+    //GAME STATE UPDATER
+    reg game_rstA = 0;
+    reg game_rstB = 0;
+    always @ (posedge clk) begin
+        game_rstA <= ~game_rstA;
+        if()
+    end
+    wire start;
+    assign start = z1;
+    
+    game_state_updater game(~rst, start, vsync_wire, stick_X1, stick_Y1, accel_X1, accel_Y1, accel_Z1,
+    z1, c1, stick_X2, stick_Y2, accel_X2, accel_Y2, accel_Z2, z2, c2, ball_x_pos, ball_y_pos, player1_x_pos, 
+    player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score);
 
 
 
 
-    reg [9:0] ball_x_pos = 10'd300;
-    reg [9:0] ball_y_pos = 10'd300;
-    reg [9:0] player1_x_pos = 10'd0;
-    reg [9:0] player1_y_pos = 10'd100;
-    reg [9:0] player2_x_pos = 10'd634;
-    reg [9:0] player2_y_pos = 10'd200;
+
     vga_display vga_maker(vga_clk, ~rst, ball_x_pos, ball_y_pos, player1_x_pos, 
     player1_y_pos, player2_x_pos, player2_y_pos, 
     hsync_wire, vsync_wire, red_wire_out, green_wire_out, blue_wire_out);

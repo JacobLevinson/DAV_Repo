@@ -1,12 +1,12 @@
 module vga_display(
 		input vgaclk,           //input pixel clock: how fast should this be?
 		input rst,              //synchronous reset
-		input [9:0] ball_x_pos,
-		input [9:0] ball_y_pos,
-		input [9:0] player1_x_pos,
-		input [9:0] player1_y_pos,
-		input [9:0] player2_x_pos,
-		input [9:0] player2_y_pos,
+		input [10:0] ball_x_pos,
+		input [10:0] ball_y_pos,
+		input [10:0] player1_x_pos,
+		input [10:0] player1_y_pos,
+		input [10:0] player2_x_pos,
+		input [10:0] player2_y_pos,
 		output hsync,			//horizontal sync out
 		output vsync,			//vertical sync out
 		output reg [3:0] red,	//red vga output
