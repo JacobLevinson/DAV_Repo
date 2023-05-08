@@ -73,11 +73,23 @@ module capstone(
 	wire [7:0] player2_score;
     
     //GAME STATE UPDATER
-    reg game_rstA = 0;
-    reg game_rstB = 0;
-    always @ (posedge clk) begin
-        game_rstA <= ~game_rstA;
-        if()
+    reg game_rst = 0;
+    reg [21:0] rst_delay_counter = 0;
+
+    //delay game reset
+    always @(posedge clk) begin
+        if (rst) begin
+            rst_delay_counter <= 0;
+            game_rst <= 1;
+        end else begin
+            if (rst_delay_counter < 2500000) begin
+                rst_delay_counter <= rst_delay_counter + 1;
+                game_rst <= 1;
+            end else begin
+                rst_delay_counter <= rst_delay_counter;
+                game_rst <= 0;
+            end
+        end
     end
     wire start;
     assign start = z1;
