@@ -39,7 +39,8 @@ module capstone(
     always_comb begin
         leds[0] = z1;
         leds[1] = z2;
-        leds[9:2] = 8'b11111111;
+        leds[8] = state[0];
+        leds[9] = state[1];
     end 
     
 
@@ -93,14 +94,14 @@ module capstone(
     end
     wire start;
     assign start = z1;
-    
+    wire [1:0] state;
     game_state_updater game(game_rst, start, vsync_wire, stick_X1, stick_Y1, accel_X1, accel_Y1, accel_Z1,
     z1, c1, stick_X2, stick_Y2, accel_X2, accel_Y2, accel_Z2, z2, c2, ball_x_pos, ball_y_pos, player1_x_pos, 
-    player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score);
+    player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score,state);
 
 
 
-
+    
 
     vga_display vga_maker(vga_clk, ~rst, ball_x_pos, ball_y_pos, player1_x_pos, 
     player1_y_pos, player2_x_pos, player2_y_pos, 
