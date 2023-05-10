@@ -106,7 +106,7 @@ module game_state_updater(
 				player2_x_pos <= 11'd634; //constant 
 				ball_x_pos = 11'd320;
 				ball_y_pos = 11'd240;
-				ball_x_vel = 10'd6;
+				ball_x_vel = 10'd8;
 				ball_y_vel = 10'd3;
 				ball_x_direction = LEFT;
 				ball_y_direction = DOWN;
@@ -115,7 +115,6 @@ module game_state_updater(
 				player1_score <= player1_score;
 				player2_score <= player2_score;
 			end else if(state == PLAY) begin
-				state <= PLAY;
 				player1_x_pos <= 11'd0; //constant 
 				player2_x_pos <= 11'd634; //constant 
 				ball_x_vel <= ball_x_vel;
@@ -169,6 +168,10 @@ module game_state_updater(
 							player1_score <= player1_score;
 							player2_score <= player2_score;
 							state <= PLAY;
+							//
+							ball_y_direction <= (stick_Y1 >= 128) ? UP : DOWN;
+							ball_y_vel <= (stick_Y1 >= 128) ? (stick_Y1-128)/32 : (128 - stick_Y1)/32;
+
 						end else begin //will hit wall - give point to other team and go to play_next
 							ball_x_pos <= ball_x_pos + ball_x_vel;
 							//ball_y_pos <= ball_y_pos;
@@ -195,6 +198,12 @@ module game_state_updater(
 							player1_score <= player1_score;
 							player2_score <= player2_score;
 							state <= PLAY;
+							//
+							ball_y_direction <= (stick_Y2 >= 128) ? UP : DOWN;
+							ball_y_vel <= (stick_Y2 >= 128) ? (stick_Y2-128)/32 : (128 - stick_Y2)/32;
+							
+
+							
 						end else begin //will hit wall - give point to other team and go to play_next
 							ball_x_pos <= ball_x_pos - ball_x_vel;
 							ball_x_direction <= LEFT;
@@ -218,7 +227,7 @@ module game_state_updater(
 						ball_y_direction <= UP;
 					end else begin //else will not hit 
 						ball_y_pos <= ball_y_pos + ball_y_vel;
-						ball_y_direction <= ball_y_direction;
+						//ball_y_direction <= ball_y_direction;
 					end
 				end else if(ball_y_direction == UP) begin
 					if((ball_y_pos) - (ball_y_vel) >= 480) begin //will hit top wall, bounce (overflow)
@@ -226,7 +235,7 @@ module game_state_updater(
 						ball_y_direction <= DOWN;
 					end else begin //will not hit top wall
 						ball_y_pos <= ball_y_pos - ball_y_vel;
-						ball_y_direction <= ball_y_direction;
+						//ball_y_direction <= ball_y_direction;
 					end
 				end
 
