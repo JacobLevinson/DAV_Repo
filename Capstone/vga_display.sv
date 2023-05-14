@@ -7,6 +7,8 @@ module vga_display(
 		input [10:0] player1_y_pos,
 		input [10:0] player2_x_pos,
 		input [10:0] player2_y_pos,
+		input [9:0] player1_stick_height,
+		input [9:0] player2_stick_height,
 		output hsync,			//horizontal sync out
 		output vsync,			//vertical sync out
 		output reg [3:0] red,	//red vga output
@@ -77,12 +79,12 @@ module vga_display(
 				red = 4'b1111;	
 				green = 4'b0000;	
 				blue = 4'b0000;
-			end else if((hc >= player1_x_pos && hc < player1_x_pos + STICK_WIDTH) && (vc >= player1_y_pos && vc < player1_y_pos + STICK_HEIGHT)) begin
+			end else if((hc >= player1_x_pos && hc < player1_x_pos + STICK_WIDTH) && (vc >= player1_y_pos && vc < player1_y_pos + player1_stick_height)) begin
 				//stick is yellow 
 				red = 4'b1111;	
 				green = 4'b1111;	
 				blue = 4'b0000;
-			end else if((hc >= player2_x_pos && hc < player2_x_pos + STICK_WIDTH) && (vc >= player2_y_pos && vc < player2_y_pos + STICK_HEIGHT)) begin
+			end else if((hc >= player2_x_pos && hc < player2_x_pos + STICK_WIDTH) && (vc >= player2_y_pos && vc < player2_y_pos + player2_stick_height)) begin
 				//stick is yellow 
 				red = 4'b1111;	
 				green = 4'b1111;	

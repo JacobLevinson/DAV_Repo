@@ -72,7 +72,9 @@ module capstone(
     wire [10:0] player2_y_pos;
     wire [7:0] player1_score;
 	wire [7:0] player2_score;
-    
+	 
+	 wire [9:0] player1_stick_height;
+	 wire [9:0] player2_stick_height;
     //GAME STATE UPDATER
     reg game_rst = 0;
     reg [21:0] rst_delay_counter = 0;
@@ -93,18 +95,18 @@ module capstone(
         end
     end
     wire start;
-    assign start = z1;
+    assign start = c1;
     wire [1:0] state;
     game_state_updater game(game_rst, start, vsync_wire, stick_X1, stick_Y1, accel_X1, accel_Y1, accel_Z1,
     z1, c1, stick_X2, stick_Y2, accel_X2, accel_Y2, accel_Z2, z2, c2, ball_x_pos, ball_y_pos, player1_x_pos, 
-    player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score,state);
+    player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score,state, player1_stick_height, player2_stick_height);
 
 
 
     
 
     vga_display vga_maker(vga_clk, ~rst, ball_x_pos, ball_y_pos, player1_x_pos, 
-    player1_y_pos, player2_x_pos, player2_y_pos, 
+    player1_y_pos, player2_x_pos, player2_y_pos, player1_stick_height, player2_stick_height,
     hsync_wire, vsync_wire, red_wire_out, green_wire_out, blue_wire_out);
     always_comb begin
 		red = red_wire_out;

@@ -16,20 +16,32 @@ module game_state_updater(
 	input [9:0] accel_Z2,
 	input z2,
 	input c2,
-    output reg [10:0] ball_x_pos,
-    output reg [10:0] ball_y_pos,
-    output reg [10:0] player1_x_pos,
-    output reg [10:0] player1_y_pos,
-    output reg [10:0] player2_x_pos,
-    output reg [10:0] player2_y_pos,
+   output reg [10:0] ball_x_pos,
+   output reg [10:0] ball_y_pos,
+   output reg [10:0] player1_x_pos,
+   output reg [10:0] player1_y_pos,
+   output reg [10:0] player2_x_pos,
+   output reg [10:0] player2_y_pos,
 	output reg [7:0] player1_score,
 	output reg [7:0] player2_score,
-	output wire [1:0] state_out
+	output wire [1:0] state_out,
+	output wire [9:0] player1_stick_height,
+	output wire [9:0] player2_stick_height
 );
 	reg [9:0] ball_x_vel;
 	reg [9:0] ball_y_vel;
 	reg ball_x_direction;
 	reg ball_y_direction;
+	
+	localparam EXTEND_THRESHOLD = 600;
+	localparam EXTEND_START = 900;
+	localparam DEFAULT_HEIGHT = 100;
+	localparam EXTENDED_HEIGHT = 200;
+	reg [9:0] player1_extend_counter;
+	reg [9:0] player2_extend_counter;
+	assign player1_stick_height = (player1_extend_counter > EXTEND_THRESHOLD)? EXTENDED_HEIGHT: DEFAULT_HEIGHT;
+	assign player2_stick_height = (player2_extend_counter > EXTEND_THRESHOLD)? EXTENDED_HEIGHT: DEFAULT_HEIGHT;
+	
 	localparam LEFT = 1'd0;
 	localparam RIGHT = 1'd1;
 	localparam DOWN = 1'd0;
@@ -51,14 +63,20 @@ module game_state_updater(
 		ball_y_direction = DOWN;
 		player1_score = 8'd0;
 		player2_score = 8'd0;
+		player1_extend_counter = 9'd0;
+		player2_extend_counter = 9'd0;
 	end
+	
 	localparam RESET = 0;
 	localparam PLAY_NEXT = 1;
 	localparam PLAY = 2;
+
 	reg [1:0] state = 0;
 	assign state_out = state;
+
 	reg tmp_stick_Y1;
 	reg tmp_stick_Y2;
+	
 	//state update
 	always @(posedge vsync) begin
 		if(rst) begin
@@ -76,6 +94,8 @@ module game_state_updater(
 			player2_y_pos <= 11'd240;
 			player1_score <= 8'd0;
 			player2_score <= 8'd0;
+			player1_extend_counter <= 9'd0;
+			player2_extend_counter <= 9'd0;
 		end else begin
 			if(state == RESET) begin
 				ball_x_pos <= 11'd320;
@@ -90,6 +110,8 @@ module game_state_updater(
 				player2_y_pos <= 11'd240;
 				player1_score <= 8'd0;
 				player2_score <= 8'd0;
+				player1_extend_counter <= 9'd0;
+				player2_extend_counter <= 9'd0;
 				if(start) begin
 					state <= PLAY_NEXT;
 				end else begin
@@ -114,6 +136,8 @@ module game_state_updater(
 				player2_y_pos = 11'd240;
 				player1_score <= player1_score;
 				player2_score <= player2_score;
+				player1_extend_counter <= 9'd0;
+				player2_extend_counter <= 9'd0;
 			end else if(state == PLAY) begin
 				player1_x_pos <= 11'd0; //constant 
 				player2_x_pos <= 11'd634; //constant 
@@ -130,10 +154,10 @@ module game_state_updater(
 						player1_y_pos <= 11'd0; 
 					end
 				end else begin //trying to move down
-					if(player1_y_pos + (128 - stick_Y1)/32 < (480 - STICK_HEIGHT)) begin //if it doesnt go over max
+					if(player1_y_pos + (128 - stick_Y1)/32 < (480 - player1_stick_height)) begin //if it doesnt go over max
 						player1_y_pos <= player1_y_pos + (128 - stick_Y1)/32;
 					end else begin //else will go over max
-						player1_y_pos <= (479-STICK_HEIGHT); 
+						player1_y_pos <= (479-player1_stick_height); 
 					end
 				end
 
@@ -145,10 +169,10 @@ module game_state_updater(
 						player2_y_pos <= 11'd0; 
 					end
 				end else begin //trying to move down
-					if(player2_y_pos + (128 - stick_Y2)/32 < (480 - STICK_HEIGHT)) begin //if it doesnt go over max
+					if(player2_y_pos + (128 - stick_Y2)/32 < (480 - player2_stick_height)) begin //if it doesnt go over max
 						player2_y_pos <= player2_y_pos + (128 - stick_Y2)/32;
 					end else begin //else will go over max
-						player2_y_pos <= (479-STICK_HEIGHT); 
+						player2_y_pos <= (479-player2_stick_height); 
 					end
 				end
 				
@@ -160,7 +184,7 @@ module game_state_updater(
 					//check if hitting wall/stick barrier
 					if(ball_x_pos - (ball_x_vel + STICK_WIDTH) >= 640) begin //will overflow -> will hit left wall
 						//check if will hit left stick
-						if(ball_y_pos >= player1_y_pos && ball_y_pos < player1_y_pos + STICK_HEIGHT) begin //will hit stick
+						if(ball_y_pos >= player1_y_pos && ball_y_pos < player1_y_pos + player1_stick_height) begin //will hit stick
 							ball_x_pos <= ball_x_pos + ball_x_vel;
 							//ball_y_pos <= ball_y_pos;
 							ball_x_direction <= RIGHT;
@@ -192,7 +216,7 @@ module game_state_updater(
 					//check if hitting wall/stick barrier
 					if((ball_x_pos + BALL_SIZE) + (ball_x_vel + STICK_WIDTH) >= 640) begin //will overflow go over, hit!
 						//check if will hit right stick
-						if(ball_y_pos > player2_y_pos && ball_y_pos < player2_y_pos + STICK_HEIGHT) begin //will hit stick
+						if(ball_y_pos > player2_y_pos && ball_y_pos < player2_y_pos + player2_stick_height) begin //will hit stick
 							ball_x_pos <= ball_x_pos - ball_x_vel;
 							ball_x_direction <= LEFT;
 							player1_score <= player1_score;
@@ -239,8 +263,17 @@ module game_state_updater(
 					end
 				end
 
-
-
+				if(player1_extend_counter > 0) begin
+					player1_extend_counter <= player1_extend_counter - 1;
+				end else if(z1) begin
+					player1_extend_counter <= EXTEND_START;
+				end
+				
+				if(player2_extend_counter > 0) begin
+					player2_extend_counter <= player2_extend_counter - 1;
+				end else if(z2) begin
+					player2_extend_counter <= EXTEND_START;
+				end
 
 
 				///////
