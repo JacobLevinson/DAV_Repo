@@ -10,7 +10,14 @@ module capstone(
     output reg [3:0] blue,
     output reg hsync,
     output reg vsync,
-    output wire [9:0] leds
+    output wire [9:0] leds,
+	 output wire [7:0] digit0,
+	 output wire [7:0] digit1,
+	 output wire [7:0] digit2,
+	 output wire [7:0] digit3,
+	 output wire [7:0] digit4,
+	 output wire [7:0] digit5
+
 );
 
 
@@ -84,7 +91,9 @@ module capstone(
     player1_y_pos, player2_x_pos, player2_y_pos, player1_score, player2_score,state, player1_stick_height, player2_stick_height,
 	 leds[9], leds[8]);
 
-
+	 wire [19:0] seven_seg_value;
+	 assign seven_seg_value = player1_score + player2_score * 10000;
+	 sevenSegDisp(seven_seg_value, digit5, digit4, digit3, digit2, digit1, digit0);
 
     
 
