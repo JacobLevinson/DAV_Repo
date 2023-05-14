@@ -26,7 +26,9 @@ module game_state_updater(
 	output reg [7:0] player2_score,
 	output wire [1:0] state_out,
 	output wire [9:0] player1_stick_height,
-	output wire [9:0] player2_stick_height
+	output wire [9:0] player2_stick_height,
+	output wire player1_extend_power_status,
+	output wire player2_extend_power_status
 );
 	reg [9:0] ball_x_vel;
 	reg [9:0] ball_y_vel;
@@ -41,6 +43,8 @@ module game_state_updater(
 	reg [9:0] player2_extend_counter;
 	assign player1_stick_height = (player1_extend_counter > EXTEND_THRESHOLD)? EXTENDED_HEIGHT: DEFAULT_HEIGHT;
 	assign player2_stick_height = (player2_extend_counter > EXTEND_THRESHOLD)? EXTENDED_HEIGHT: DEFAULT_HEIGHT;
+	assign player1_extend_power_status = (player1_extend_counter == 0);
+	assign player2_extend_power_status = (player2_extend_counter == 0);
 	
 	localparam LEFT = 1'd0;
 	localparam RIGHT = 1'd1;
